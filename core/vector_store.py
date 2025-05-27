@@ -10,6 +10,7 @@ from langchain.vectorstores import Chroma
 # Load environment variables from .env 
 load_dotenv()
 
+
 def build_vector_store(
     documents: List[Document],
     chunk_size: int = 500,
