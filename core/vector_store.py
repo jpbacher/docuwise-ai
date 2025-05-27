@@ -35,7 +35,8 @@ def build_vector_store(
     texts = text_splitter.split_documents(documents)
 
     # Create embeddings
-    embeddings = OpenAIEmbeddings()
+    api_key = os.getenv("OPENAI_API_KEY")
+    embeddings = OpenAIEmbeddings(openai_api_key=api_key)
 
     # Create and return the vector store
     return Chroma.from_documents(texts, embeddings)
