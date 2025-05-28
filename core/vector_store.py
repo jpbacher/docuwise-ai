@@ -7,7 +7,7 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 
 
-# Load environment variables from .env 
+# Load environment variables from .env
 load_dotenv()
 
 
@@ -29,7 +29,7 @@ def build_vector_store(
     """
     # Split documents into chunks
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=chunk_size, 
+        chunk_size=chunk_size,
         chunk_overlap=chunk_overlap
     )
     texts = text_splitter.split_documents(documents)
@@ -40,4 +40,3 @@ def build_vector_store(
 
     # Create and return the vector store
     return Chroma.from_documents(texts, embeddings)
-   
