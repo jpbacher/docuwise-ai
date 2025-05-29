@@ -13,7 +13,7 @@ load_dotenv()
 INTENT_PROMPT = PromptTemplate(
     input_variables=["user_input"],
     template="""
-You are an assistant that classifies a user's input as either a request
+You are a helpful assistant that classifies a user's input as either a request
 to summarize a document or to ask a question about a document.
 
 Return one word only:
