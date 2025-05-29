@@ -1,13 +1,16 @@
+import os
+import streamlit as st
 from typing import List
 from langchain.docstore.document import Document
 from langchain.document_loaders import PyPDFLoader, CSVLoader, TextLoader
 import tempfile
-import os
-import streamlit as st
+
 
 def load_uploaded_files(uploaded_files: List) -> List[Document]:
     """
-    Loads and parses uploaded PDF, TXT, and CSV files into LangChain Document objects.
+    Loads and parses uploaded PDF, TXT, and CSV files into LangChain Document 
+    objects, overriding each document's source metadata 
+    with the original filename.
 
     Parameters:
     -----------
@@ -17,29 +20,36 @@ def load_uploaded_files(uploaded_files: List) -> List[Document]:
     Returns:
     --------
     List[Document]
-        Parsed documents ready for chunking and embedding.
+        Parsed documents ready for chunking and embedding, with readable source metadata.
     """
-    documents = []
+    documents: List[Document] = []
 
-    for file in uploaded_files:
+    for uploaded in uploaded_files:
+        # Write the uploaded file to a temporary file
         with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
-            tmp_file.write(file.read())
-            file_path = tmp_file.name
+            tmp_file.write(uploaded.read())
+            tmp_path = tmp_file.name
 
         try:
-            if file.name.endswith(".pdf"):
-                loader = PyPDFLoader(file_path)
-            elif file.name.endswith(".csv"):
-                loader = CSVLoader(file_path)
-            elif file.name.endswith(".txt"):
-                loader = TextLoader(file_path)
+            # Select appropriate loader
+            if uploaded.name.lower().endswith(".pdf"):
+                loader = PyPDFLoader(tmp_path)
+            elif uploaded.name.lower().endswith(".csv"):
+                loader = CSVLoader(tmp_path)
+            elif uploaded.name.lower().endswith(".txt"):
+                loader = TextLoader(tmp_path)
             else:
-                st.warning(f"Unsupported file type: {file.name}")
+                st.warning(f"Unsupported file type: {uploaded.name}")
                 continue
 
-            documents.extend(loader.load())
+            # Load documents and override source metadata
+            docs = loader.load()
+            for doc in docs:
+                doc.metadata["source"] = uploaded.name
+            documents.extend(docs)
 
         finally:
-            os.remove(file_path)
+            # Clean up temp file
+            os.remove(tmp_path)
 
     return documents
