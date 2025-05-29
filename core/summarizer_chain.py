@@ -1,7 +1,7 @@
-from langchain.chat_models import ChatOpenAI
-from langchain.chains import LLMChain
 import os
 from dotenv import load_dotenv
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import LLMChain
 
 from prompts.summarization_prompt import SUMMARIZATION_PROMPT
 
