@@ -1,0 +1,6 @@
+chromadb>=1.0.10          # vector store backend
+langchain>=0.3.25         # core chaining framework
+openai>=1.82.0            # LLM API
+pypdf>=5.5.0              # PDF loading
+python-dotenv>=1.1.0      # for .env support
+streamlit>=1.45.1          # UI
