@@ -31,13 +31,19 @@ def load_uploaded_files(uploaded_files: List) -> List[Document]:
             tmp_path = tmp_file.name
 
         try:
-            # Select appropriate loader
-            if uploaded.name.lower().endswith(".pdf"):
+            fname = uploaded.name.strip().lower()
+            if fname.endswith(".pdf"):
                 loader = PyPDFLoader(tmp_path)
-            elif uploaded.name.lower().endswith(".csv"):
-                loader = CSVLoader(tmp_path)
-            elif uploaded.name.lower().endswith(".txt"):
-                loader = TextLoader(tmp_path)
+
+            elif fname.endswith(".csv"):
+                # If you know CSVs might have non-UTF8 text:
+                loader = CSVLoader(tmp_path, encoding="latin-1")
+
+            elif fname.endswith(".txt"):
+                # Either ignore errors or assume latin-1
+                loader = TextLoader(tmp_path, encoding="latin-1")
+                # Or: TextLoader(tmp_path, encoding="utf-8", errors="ignore")
+
             else:
                 st.warning(f"Unsupported file type: {uploaded.name}")
                 continue
