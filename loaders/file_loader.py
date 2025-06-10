@@ -8,8 +8,8 @@ import tempfile
 
 def load_uploaded_files(uploaded_files: List) -> List[Document]:
     """
-    Loads and parses uploaded PDF, TXT, and CSV files into LangChain Document 
-    objects, overriding each document's source metadata 
+    Loads and parses uploaded PDF, TXT, and CSV files into LangChain Document
+    objects, overriding each document's source metadata
     with the original filename.
 
     Parameters:
@@ -20,7 +20,8 @@ def load_uploaded_files(uploaded_files: List) -> List[Document]:
     Returns:
     --------
     List[Document]
-        Parsed documents ready for chunking and embedding, with readable source metadata.
+        Parsed documents ready for chunking and embedding, with readable
+        source metadata.
     """
     documents: List[Document] = []
 
